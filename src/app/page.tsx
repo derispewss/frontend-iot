@@ -11,14 +11,17 @@ const koho = KoHo({
     subsets: ["latin"],
     weight: ["400"],
 });
-
+interface pages {
+    title: string;
+    description: string;
+}
 export default function Home() {
     const router = useRouter();
-    const [showEnterance, setShowEnterance] = useState(true);
-    const [isFade, setIsFade] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [showEnterance, setShowEnterance] = useState<boolean>(true);
+    const [isFade, setIsFade] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(0);
 
-    const pages = [
+    const pages: pages[] = [
         {
             title: "Open trash can with sensor",
             description: "we can open the trash can if someone approaches the sensor",
