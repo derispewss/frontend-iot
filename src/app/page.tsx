@@ -42,7 +42,7 @@ export default function Home() {
 
     const handleNext = () => {
         if (currentPage === pages.length - 1) {
-            router.push("/"); //belum ditentuin mau kemana (belum ada routesnya)
+            router.push("/dashboard"); //belum ditentuin mau kemana (belum ada routesnya)
         }
         setIsFade(false);
         setTimeout(() => {
