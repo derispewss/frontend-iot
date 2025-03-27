@@ -12,7 +12,7 @@ import { Icon } from "@iconify/react";
 const Dashboard = () => {
     const [isGreeting, setIsGreeting] = useState<string>("");
     const [isImage, setIsImage] = useState<StaticImageData>(Morning);
-    const [isStatus, setIsStatus] = useState<boolean>(false);
+    const [isStatus, setIsStatus] = useState<boolean>(true);
     const [isCapacity] = useState<number>(10); //masih set manual gatau mau di gimanain
     const [isColor, setIsColor] = useState<string>("");
     const [isDay, setIsDay] = useState<string>(""); // sementara masih di gabung dengan useEffectnye greeting
@@ -105,7 +105,9 @@ const Dashboard = () => {
                 <div className="relative w-full max-w-5xl">
                     <div className="relative z-10 ">
                         <Image src={isImage} alt="Evening" className="w-full h-54 object-cover rounded-md shadow-[6px_6px_8px_rgba(0,0,0,0.9)]" />
-                        <h2 className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white text-lg md:text-xl lg:text-2xl">Hi, {isGreeting}. How are you?</h2>
+                        <h2 className=" absolute w-max text-white text-lg md:text-xl lg:text-2xl right-1/2 lg:bottom-2 bottom-8 translate-x-1/2 md:top-2/3 md:right-8 md:translate-x-0 md:transform md:-translate-y-1/2">
+                            Hi, {isGreeting}. How are you?
+                        </h2>
                     </div>
                 </div>
                 <div className="flex flex-col lg:flex-row justify-between gap-6 mt-3 w-full max-w-5xl">

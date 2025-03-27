@@ -14,10 +14,12 @@ const koho = KoHo({
 
 const Sidebar = () => {
     const router = useRouter();
-    const [isMobile, setIsMobile] = useState<boolean>(false);
+    const [isMobile, setIsMobile] = useState<boolean | null>(null);
 
     const handleResize = () => {
-        setIsMobile(window.innerWidth <= 1024);
+        if (typeof window !== undefined) {
+            setIsMobile(window.innerWidth <= 1024);
+        }
     };
 
     useEffect(() => {
@@ -27,6 +29,7 @@ const Sidebar = () => {
             window.removeEventListener("resize", handleResize);
         };
     });
+    if (isMobile === null) return null;
 
     return (
         <aside>
