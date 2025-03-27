@@ -1,9 +1,9 @@
 "use client";
 
-import Logo from "@/components/image/Logo.png";
+import Logo from "@/assets/image/Logo.png";
 import Image from "next/image";
 import { KoHo } from "next/font/google";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -11,17 +11,14 @@ const koho = KoHo({
     subsets: ["latin"],
     weight: ["400"],
 });
-interface pages {
-    title: string;
-    description: string;
-}
+
 export default function Home() {
     const router = useRouter();
     const [showEnterance, setShowEnterance] = useState<boolean>(true);
     const [isFade, setIsFade] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(0);
 
-    const pages: pages[] = [
+    const pages = useRef([
         {
             title: "Open trash can with sensor",
             description: "we can open the trash can if someone approaches the sensor",
@@ -38,17 +35,19 @@ export default function Home() {
             title: "Please install telegram ",
             description: "Please install telegram for monitoring notification from your garbage",
         },
-    ];
+    ]);
 
     const handleNext = () => {
-        if (currentPage === pages.length - 1) {
-            router.push("/dashboard"); //belum ditentuin mau kemana (belum ada routesnya)
+        if (currentPage < pages.current.length - 1) {
+            setIsFade(false);
+            setTimeout(() => {
+                setCurrentPage(currentPage + 1);
+                setIsFade(true);
+            }, 100);
+        } else {
+            localStorage.setItem("visited", "true");
+            router.push("/dashboard");
         }
-        setIsFade(false);
-        setTimeout(() => {
-            setCurrentPage((prev) => (prev + 1) % pages.length);
-            setIsFade(true);
-        }, 300);
     };
 
     useEffect(() => {
@@ -66,6 +65,15 @@ export default function Home() {
         };
     }, []);
 
+    useEffect(() => {
+        const hasVisited = localStorage.getItem("visited");
+        if (hasVisited) {
+            setCurrentPage(pages.current.length - 1);
+            setShowEnterance(false);
+            setIsFade(true);
+        }
+    }, [pages]);
+
     return (
         <>
             {showEnterance ? (
@@ -74,29 +82,30 @@ export default function Home() {
                         isFade ? "opacity-0" : "opacity-100"
                     }`}
                 >
-                    <div className="flex flex-row justify-center items-center">
-                        <Image src={Logo} alt="Logo" />
-                        <h1 className={`${koho.className} text-6xl pl-2.5`}>EcoTrack</h1>
+                    <div className="flex flex-row justify-center items-center flex-wrap px-4">
+                        <Image src={Logo} alt="Logo" className=" lg:w-auto lg:h-auto" />
+                        <h1 className={`${koho.className} text-4xl sm:text-5xl md:text-6xl pl-2.5`}>EcoTrack</h1>
                     </div>
                 </div>
             ) : (
                 !showEnterance && (
                     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 bg-background">
-                        <div className="flex-grow flex flex-col items-center justify-center">
-                            <div className={`container mx-auto transition-opacity duration-1000 ease-in-out ${isFade ? "opacity-100" : "opacity-0"}`}>
-                                <div className="flex flex-row justify-center items-center">
-                                    <Image src={Logo} alt="Logo" />
-                                    <h1 className={`${koho.className} text-6xl pl-2.5`}>EcoTrack</h1>
+                        <div className="flex-grow flex flex-col items-center justify-center w-full">
+                            <div className={`w-full max-w-4xl mx-auto transition-opacity duration-1000 ease-in-out ${isFade ? "opacity-100" : "opacity-0"}`}>
+                                <div className="flex flex-row justify-center items-center flex-wrap px-4 text-center sm:text-left">
+                                    <Image src={Logo} alt="Logo" className="lg:w-auto lg:h-auto" />
+                                    <h1 className={`${koho.className} text-4xl sm:text-5xl md:text-6xl pl-2.5`}>EcoTrack</h1>
                                 </div>
-                                <div className="mt-6 text-center">
-                                    <p className="font-bold text-xl pb-2.5">{pages[currentPage].title}</p>
-                                    <p className="text-sidebar-ring font-light text-2xl">{pages[currentPage].description}</p>
+                                <div className="mt-6 text-center px-2 sm:px-6">
+                                    <p className="font-bold text-lg sm:text-xl md:text-2xl pb-2.5">{pages.current[currentPage].title}</p>
+                                    <p className="text-sidebar-ring font-light text-base sm:text-lg md:text-2xl">{pages.current[currentPage].description}</p>
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-auto mb-6 w-full relative flex justify-center items-center">
+
+                        <div className="mt-auto mb-14 w-full relative flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
                             <div className="flex space-x-2">
-                                {pages.map((_, index) => (
+                                {pages.current.map((_, index) => (
                                     <div
                                         key={index}
                                         onClick={() => {
@@ -106,12 +115,12 @@ export default function Home() {
                                                 setIsFade(true);
                                             }, 100);
                                         }}
-                                        className={`w-20 h-4 rounded hover:cursor-pointer ${index === currentPage ? "bg-black" : "bg-zinc-200"}`}
+                                        className={`w-12 h-4 rounded hover:cursor-pointer ${index === currentPage ? "bg-black" : "bg-zinc-200"}`}
                                     />
                                 ))}
                             </div>
-                            <Button className="absolute right-4 mr-4 bg-zinc-200 text-black hover:bg-white hover:cursor-pointer w-24 h-10" onClick={handleNext}>
-                                {currentPage === pages.length - 1 ? "Start" : "Next"}
+                            <Button className="bg-zinc-200 text-black hover:bg-white hover:cursor-pointer w-24 h-10 sm:absolute sm:right-4" onClick={handleNext}>
+                                {currentPage === pages.current.length - 1 ? "Start" : "Next"}
                             </Button>
                         </div>
                     </div>
