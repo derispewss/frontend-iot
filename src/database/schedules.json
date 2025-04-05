@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "day": "Sunday",
+    "action": "Throw garbage",
+    "name": "zovan rizza",
+    "time": "6.00 Am"
+  },
+  {
+    "id": 2,
+    "day": "Monday",
+    "action": "Throw garbage",
+    "name": "Deris Firmansyah",
+    "time": "6.00 Am"
+  },
+  {
+    "id": 3,
+    "day": "Tuesday",
+    "action": "Throw garbage",
+    "name": "Vicar al faruq",
+    "time": "6.00 Am"
+  },
+  {
+    "id": 4,
+    "day": "Wednesday",
+    "action": "Throw garbage",
+    "name": "Sapto Gusty",
+    "time": "6.99 Am"
+  },
+  {
+    "id": 5,
+    "day": "Thursday",
+    "action": "Throw garbage",
+    "name": "Mahdana",
+    "time": "7.89 Am"
+  },
+  {
+    "id": 6,
+    "day": "Friday",
+    "action": "Throw garbage",
+    "name": "ozak desu",
+    "time": "0:00 AM"
+  },
+  {
+    "id": 8,
+    "name": "Bagong",
+    "action": "Tidur dll",
+    "day": "saturday",
+    "time": "8:07 PM"
+  }
+]
