@@ -113,6 +113,23 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@layer utilities {
+    .loader {
+      display: inline-block;
+      border-width: 2px;
+      border-style: solid;
+      border-radius: 9999px;
+      border-top-color: transparent;
+      animation: spin 0.75s linear infinite;
+    }
+  
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;

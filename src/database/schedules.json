@@ -33,19 +33,5 @@
     "action": "Throw garbage",
     "name": "Mahdana",
     "time": "7.89 Am"
-  },
-  {
-    "id": 6,
-    "day": "Friday",
-    "action": "Throw garbage",
-    "name": "ozak desu",
-    "time": "0:00 AM"
-  },
-  {
-    "id": 8,
-    "name": "Bagong",
-    "action": "Tidur dll",
-    "day": "saturday",
-    "time": "8:07 PM"
   }
 ]
