@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "./dialog";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { toast } from "sonner";
 import { IDeleteForm } from "@/utils/types/Types";
 
