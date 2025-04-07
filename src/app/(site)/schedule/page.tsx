@@ -1,7 +1,7 @@
 "use client";
 
-import Delete from "@/components/ui/delete";
-import ScheduleForm from "@/components/ui/form";
+import Delete from "@/components/delete";
+import ScheduleForm from "@/components/form";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ISchedule } from "@/utils/types/Types";
 import { Icon } from "@iconify/react/dist/iconify.js";
