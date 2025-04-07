@@ -1,5 +1,12 @@
 [
   {
+    "id": 1,
+    "day": "Sunday",
+    "action": "Throw garbage",
+    "name": "zovan",
+    "time": "12:00 AM"
+  },
+  {
     "id": 2,
     "day": "Monday",
     "action": "Throw garbage",
