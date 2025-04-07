@@ -1,8 +1,9 @@
 "use client";
+
 import Delete from "@/components/ui/delete";
-import Form from "@/components/ui/form";
-import Sidebar from "@/components/ui/sidebar";
+import ScheduleForm from "@/components/ui/form";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ISchedule } from "@/utils/types/Types";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 
@@ -12,14 +13,6 @@ const headers = [
     { key: "name", label: "Name" },
     { key: "time", label: "Time" },
 ];
-
-interface ISchedule {
-    id: number;
-    name: string;
-    action: string;
-    day: string;
-    time: string;
-}
 
 const Schedule = () => {
     const [isSchedule, setIsSchedule] = useState<ISchedule[]>([]);
@@ -32,7 +25,6 @@ const Schedule = () => {
         try {
             const res = await fetch("/api/schedule");
             if (!res.ok) throw new Error("Failed to fetch schedule");
-
             const data = await res.json();
             setIsSchedule(data);
         } catch (error) {
@@ -46,10 +38,7 @@ const Schedule = () => {
 
     return (
         <>
-            {selectedId !== null && <Form open={isUpdate} setOpen={setIsUpdate} onSucces={fetchData} id={selectedId} />}
-            {selectedId !== null && <Delete Delete={isDelete} setDelete={setIsDelete} id={selectedId} onSucces={fetchData} />}
-            <div className="flex">
-                <Sidebar />
+            <div>
                 <div className="w-full px-5 py-18 flex flex-col font-medium">
                     <div className="justify-between flex px-0 xl:px-6 lg:px-6 mb-3">
                         <h1 className="font-semibold text-2xl mb-6">Schedule</h1>
@@ -59,8 +48,8 @@ const Schedule = () => {
                             onClick={() => {
                                 setOpen(true);
                             }}
-                        />
-                        <Form open={open} setOpen={setOpen} onSucces={fetchData} />
+                            />
+                        <ScheduleForm open={open} setOpen={setOpen} onSuccess={fetchData} />
                     </div>
                     <div className="w-full h-full rounded-2xl px-0 lg:px-6 xl:px-6">
                         <div className="w-full h-[482px] overflow-x-auto rounded-xl shadow-md border border-gray-200">
@@ -95,7 +84,7 @@ const Schedule = () => {
                                                             setSelectedId(row.id);
                                                             setIsUpdate(true);
                                                         }}
-                                                    />
+                                                        />
                                                     <Icon
                                                         icon="gg:trash"
                                                         className="text-[rgb(231,15,15)] w-4 h-4 hover:cursor-pointer"
@@ -103,7 +92,7 @@ const Schedule = () => {
                                                             setIsDelete(true);
                                                             setSelectedId(row.id);
                                                         }}
-                                                    />
+                                                        />
                                                 </div>
                                             </TableCell>
                                         </TableRow>
@@ -114,6 +103,8 @@ const Schedule = () => {
                     </div>
                 </div>
             </div>
+            {selectedId !== null && <ScheduleForm open={isUpdate} setOpen={setIsUpdate} onSuccess={fetchData} id={selectedId} />}
+            {selectedId !== null && <Delete Delete={isDelete} setDelete={setIsDelete} id={selectedId} onSucces={fetchData} />}
         </>
     );
 };
