@@ -121,8 +121,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
               </h1>
             </div>
           </div>
-          <div className={`fixed inset-0 bg-black bg-opacity-50 z-30 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={() => setIsOpen(false)} />
-          
+          <div className={`fixed inset-0 bg-black/60 bg-opacity-50 z-30 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={() => setIsOpen(false)} />
           <div className={`fixed left-0 top-0 h-full bg-muted-foreground w-64 z-40 shadow-xl transform transition-transform duration-300 ease-in-out ${
               isOpen ? "translate-x-0" : "-translate-x-full"}`}>
             <div className="p-4 h-16 flex items-center border-b border-muted/20">
