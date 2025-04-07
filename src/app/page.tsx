@@ -119,7 +119,7 @@ export default function Home() {
                                     />
                                 ))}
                             </div>
-                            <Button className="bg-zinc-200 text-black hover:bg-white hover:cursor-pointer w-24 h-10 sm:absolute sm:right-4" onClick={handleNext}>
+                            <Button className="bg-zinc-200 text-black hover:bg-gray-200 hover:cursor-pointer w-24 h-10 sm:absolute sm:right-4" onClick={handleNext}>
                                 {currentPage === pages.current.length - 1 ? "Start" : "Next"}
                             </Button>
                         </div>
