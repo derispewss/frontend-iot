@@ -4,7 +4,7 @@
     "day": "Sunday",
     "action": "Throw garbage",
     "name": "zovan",
-    "time": "12:00 AM"
+    "time": "1:00 PM"
   },
   {
     "id": 2,
@@ -32,6 +32,6 @@
     "day": "Thursday",
     "action": "Throw garbage",
     "name": "Mahdana",
-    "time": "7.89 Am"
+    "time": "12:30 PM"
   }
 ]
