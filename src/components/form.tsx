@@ -1,174 +1,173 @@
-"use client";
-import { Dialog, DialogContent, DialogTitle, DialogHeader } from "@/components/ui/dialog";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
-import { IFormField, IScheduleData, IScheduleFormProps } from "@/utils/types/Types";
-import { toast } from "sonner"
+'use client'
+import { Dialog, DialogContent, DialogTitle, DialogHeader } from '@/components/ui/dialog'
+import { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Loader2 } from 'lucide-react'
+import { IFormField, IScheduleData, IScheduleFormProps } from '@/utils/types/Types'
+import { toast } from 'sonner'
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const HOURS = Array.from({ length: 12 }, (_, i) => i === 0 ? 12 : i);
-const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
-const PERIODS = ["AM", "PM"];
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const HOURS = Array.from({ length: 12 }, (_, i) => (i === 0 ? 12 : i))
+const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'))
+const PERIODS = ['AM', 'PM']
 
 const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
     const [formData, setFormData] = useState<{ [key: string]: string }>({
-        name: "",
-        action: "",
+        name: '',
+        action: '',
         day: DAYS[0],
-    });
-    const [selectedHour, setSelectedHour] = useState<number>(12);
-    const [selectedMinute, setSelectedMinute] = useState<string>("00");
-    const [selectedPeriod, setSelectedPeriod] = useState<string>("AM");
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    })
+    const [selectedHour, setSelectedHour] = useState<number>(12)
+    const [selectedMinute, setSelectedMinute] = useState<string>('00')
+    const [selectedPeriod, setSelectedPeriod] = useState<string>('AM')
+    const [errors, setErrors] = useState<{ [key: string]: string }>({})
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const formFields: IFormField[] = [
         {
-            name: "name",
-            label: "Schedule Name",
-            type: "text",
+            name: 'name',
+            label: 'Schedule Name',
+            type: 'text',
             required: true,
-            validation: (value) => value.trim() ? null : "Schedule name is required"
+            validation: (value) => (value.trim() ? null : 'Schedule name is required'),
         },
         {
-            name: "action",
-            label: "Activity",
-            type: "text",
+            name: 'action',
+            label: 'Activity',
+            type: 'text',
             required: true,
-            validation: (value) => value.trim() ? null : "Action is required"
+            validation: (value) => (value.trim() ? null : 'Action is required'),
         },
         {
-            name: "day",
-            label: "Day of Week",
-            type: "select",
+            name: 'day',
+            label: 'Day of Week',
+            type: 'select',
             options: DAYS,
-            required: true
-        }
-    ];
+            required: true,
+        },
+    ]
 
     useEffect(() => {
         const fetchExistingData = async () => {
-            if (!id || !open) return;
-            
-            setIsLoading(true);
+            if (!id || !open) return
+
+            setIsLoading(true)
             try {
-                const response = await fetch(`/api/schedule/${id}`);
-                if (!response.ok) throw new Error("Failed to fetch schedule data");
-                
-                const data: IScheduleData = await response.json();
-                const timeMatch = data.time.match(/(\d+):(\d+)\s+(AM|PM)/i);
+                const response = await fetch(`/api/schedule/${id}`)
+                if (!response.ok) throw new Error('Failed to fetch schedule data')
+
+                const data: IScheduleData = await response.json()
+                const timeMatch = data.time.match(/(\d+):(\d+)\s+(AM|PM)/i)
 
                 if (timeMatch) {
-                    const [_, hour, minute, period] = timeMatch;
-                    setSelectedHour(parseInt(hour) === 0 ? 12 : parseInt(hour));
-                    setSelectedMinute(minute);
-                    setSelectedPeriod(period.toUpperCase());
+                    const [hour, minute, period] = timeMatch
+                    setSelectedHour(parseInt(hour) === 0 ? 12 : parseInt(hour))
+                    setSelectedMinute(minute)
+                    setSelectedPeriod(period.toUpperCase())
                 }
-                
+
                 setFormData({
-                    name: data.name || "",
-                    action: data.action || "",
-                    day: data.day || DAYS[0]
-                });
+                    name: data.name || '',
+                    action: data.action || '',
+                    day: data.day || DAYS[0],
+                })
             } catch (error) {
-                console.error("Error fetching schedule:", error);
-                toast.error("Failed to load schedule data");
+                console.error('Error fetching schedule:', error)
+                toast.error('Failed to load schedule data')
             } finally {
-                setIsLoading(false);
+                setIsLoading(false)
             }
-        };
-        
-        fetchExistingData();
-    }, [id, open]);
-    
+        }
+
+        fetchExistingData()
+    }, [id, open])
+
     const validateForm = (): boolean => {
-        const newErrors: { [key: string]: string } = {};
-        
-        formFields.forEach(field => {
+        const newErrors: { [key: string]: string } = {}
+
+        formFields.forEach((field) => {
             if (field.required && field.validation) {
-                const error = field.validation(formData[field.name] || "");
-                if (error) newErrors[field.name] = error;
+                const error = field.validation(formData[field.name] || '')
+                if (error) newErrors[field.name] = error
             }
-        });
-        
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+        })
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
 
     const handleChange = (name: string, value: string) => {
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }))
         if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: "" }));
+            setErrors((prev) => ({ ...prev, [name]: '' }))
         }
-    };
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        if (!validateForm()) return;
-        
-        setIsSubmitting(true);
-        
+        e.preventDefault()
+
+        if (!validateForm()) return
+
+        setIsSubmitting(true)
+
         const scheduleData = {
             name: formData.name,
             action: formData.action,
             day: formData.day,
             time: `${selectedHour}:${selectedMinute} ${selectedPeriod}`,
-        };
+        }
 
-        const isEdit = !!id;
-        const url = isEdit ? `/api/schedule/${id}` : "/api/schedule/";
-        const method = isEdit ? "PUT" : "POST";
+        const isEdit = !!id
+        const url = isEdit ? `/api/schedule/${id}` : '/api/schedule/'
+        const method = isEdit ? 'PUT' : 'POST'
 
         try {
             const res = await fetch(url, {
                 method,
-                headers: { "Content-Type": "application/json" },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(scheduleData),
-            });
+            })
 
             if (!res.ok) {
-                const errorData = await res.json().catch(() => null);
-                throw new Error(errorData?.message || `Failed to ${isEdit ? "update" : "create"} schedule`);
+                const errorData = await res.json().catch(() => null)
+                throw new Error(errorData?.message || `Failed to ${isEdit ? 'update' : 'create'} schedule`)
             }
 
-            const data = await res.json();
-            toast.success(isEdit ? "Schedule updated successfully" : "Schedule created successfully");
+            toast.success(isEdit ? 'Schedule updated successfully' : 'Schedule created successfully')
 
-            onSuccess();
-            setOpen(false);
+            onSuccess()
+            setOpen(false)
         } catch (error) {
-            console.error("Error:", error);
-            toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+            console.error('Error:', error)
+            toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
         } finally {
-            setIsSubmitting(false);
+            setIsSubmitting(false)
         }
-    };
+    }
 
     const resetForm = () => {
         setFormData({
-            name: "",
-            action: "",
+            name: '',
+            action: '',
             day: DAYS[0],
-        });
-        setSelectedHour(12);
-        setSelectedMinute("00");
-        setSelectedPeriod("AM");
-        setErrors({});
-    };
+        })
+        setSelectedHour(12)
+        setSelectedMinute('00')
+        setSelectedPeriod('AM')
+        setErrors({})
+    }
 
     useEffect(() => {
         if (!open) {
-            setTimeout(resetForm, 300);
+            setTimeout(resetForm, 300)
         }
-    }, [open]);
+    }, [open])
 
-    const dialogTitle = id ? "Edit Schedule" : "Create New Schedule";
+    const dialogTitle = id ? 'Edit Schedule' : 'Create New Schedule'
 
     if (isLoading) {
         return (
@@ -182,18 +181,21 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                     </div>
                 </DialogContent>
             </Dialog>
-        );
+        )
     }
 
     return (
-        <Dialog open={open} onOpenChange={(newOpen) => {
-            if (!isSubmitting) setOpen(newOpen);
-        }}>
+        <Dialog
+            open={open}
+            onOpenChange={(newOpen) => {
+                if (!isSubmitting) setOpen(newOpen)
+            }}
+        >
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>{dialogTitle}</DialogTitle>
                 </DialogHeader>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                     {formFields.map((field) => (
                         <div key={field.name} className="space-y-2">
@@ -201,24 +203,20 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                                 {field.label}
                                 {field.required && <span className="text-red-500 ml-1">*</span>}
                             </Label>
-                            
-                            {field.type === "text" ? (
+
+                            {field.type === 'text' ? (
                                 <Input
                                     id={field.name}
                                     name={field.name}
-                                    value={formData[field.name] || ""}
+                                    value={formData[field.name] || ''}
                                     onChange={(e) => handleChange(field.name, e.target.value)}
                                     placeholder={`Enter ${field.label.toLowerCase()}`}
-                                    className={errors[field.name] ? "border-red-500" : ""}
+                                    className={errors[field.name] ? 'border-red-500' : ''}
                                     disabled={isSubmitting}
                                 />
-                            ) : field.type === "select" && field.options ? (
-                                <Select 
-                                    value={formData[field.name] || field.options[0]}
-                                    onValueChange={(value) => handleChange(field.name, value)}
-                                    disabled={isSubmitting}
-                                >
-                                    <SelectTrigger className={errors[field.name] ? "border-red-500" : ""}>
+                            ) : field.type === 'select' && field.options ? (
+                                <Select value={formData[field.name] || field.options[0]} onValueChange={(value) => handleChange(field.name, value)} disabled={isSubmitting}>
+                                    <SelectTrigger className={errors[field.name] ? 'border-red-500' : ''}>
                                         <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -230,10 +228,8 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                                     </SelectContent>
                                 </Select>
                             ) : null}
-                            
-                            {errors[field.name] && (
-                                <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>
-                            )}
+
+                            {errors[field.name] && <p className="text-red-500 text-sm mt-1">{errors[field.name]}</p>}
                         </div>
                     ))}
 
@@ -242,11 +238,7 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                             Time <span className="text-red-500">*</span>
                         </Label>
                         <div className="flex items-center space-x-2">
-                            <Select 
-                                value={String(selectedHour)}
-                                onValueChange={(value) => setSelectedHour(parseInt(value))}
-                                disabled={isSubmitting}
-                            >
+                            <Select value={String(selectedHour)} onValueChange={(value) => setSelectedHour(parseInt(value))} disabled={isSubmitting}>
                                 <SelectTrigger className="w-24">
                                     <SelectValue placeholder="Hour" />
                                 </SelectTrigger>
@@ -261,11 +253,7 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
 
                             <span className="text-xl font-medium">:</span>
 
-                            <Select 
-                                value={selectedMinute}
-                                onValueChange={setSelectedMinute}
-                                disabled={isSubmitting}
-                            >
+                            <Select value={selectedMinute} onValueChange={setSelectedMinute} disabled={isSubmitting}>
                                 <SelectTrigger className="w-24">
                                     <SelectValue placeholder="Min" />
                                 </SelectTrigger>
@@ -278,11 +266,7 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                                 </SelectContent>
                             </Select>
 
-                            <Select 
-                                value={selectedPeriod}
-                                onValueChange={setSelectedPeriod}
-                                disabled={isSubmitting}
-                            >
+                            <Select value={selectedPeriod} onValueChange={setSelectedPeriod} disabled={isSubmitting}>
                                 <SelectTrigger className="w-24">
                                     <SelectValue placeholder="AM/PM" />
                                 </SelectTrigger>
@@ -298,33 +282,26 @@ const ScheduleForm = ({ open, setOpen, onSuccess, id }: IScheduleFormProps) => {
                     </div>
 
                     <div className="flex justify-end gap-2 pt-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setOpen(false)}
-                            disabled={isSubmitting}
-                        >
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
                             Cancel
                         </Button>
-                        <Button 
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="min-w-24"
-                        >
+                        <Button type="submit" disabled={isSubmitting} className="min-w-24">
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {id ? "Updating..." : "Creating..."}
+                                    {id ? 'Updating...' : 'Creating...'}
                                 </>
+                            ) : id ? (
+                                'Update'
                             ) : (
-                                id ? "Update" : "Create"
+                                'Create'
                             )}
                         </Button>
                     </div>
                 </form>
             </DialogContent>
         </Dialog>
-    );
-};
+    )
+}
 
-export default ScheduleForm;
+export default ScheduleForm
