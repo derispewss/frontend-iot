@@ -6,6 +6,7 @@ import { KoHo } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const koho = KoHo({
     subsets: ["latin"],
@@ -45,7 +46,7 @@ export default function Home() {
                 setIsFade(true);
             }, 100);
         } else {
-            localStorage.setItem("visited", "true");
+            Cookies.set("visited", "true");
             router.push("/dashboard");
         }
     };
@@ -54,11 +55,9 @@ export default function Home() {
         const setTime = setTimeout(() => {
             setShowEnterance(false);
         }, 3000);
-
         const delay = setTimeout(() => {
             setIsFade(true);
         }, 2500);
-
         return () => {
             clearTimeout(setTime);
             clearTimeout(delay);
@@ -66,11 +65,11 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        const hasVisited = localStorage.getItem("visited");
+        const hasVisited = Cookies.get("visited");
         if (hasVisited) {
-            setCurrentPage(pages.current.length - 1);
             setShowEnterance(false);
             setIsFade(true);
+            router.push("/dashboard");
         }
     }, [pages]);
 
