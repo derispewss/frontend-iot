@@ -97,20 +97,22 @@ const Dashboard = () => {
                 </div>
                 <div className="flex flex-col gap-2 w-full max-w-5xl mt-1">
                     <h1 className="text-xl md:text-2xl font-medium">Schedule</h1>
-                    {getSchedule.map((item: ISchedule, index) => (
-                        <div
-                            className="w-full h-36 bg-[rgb(243,243,243)] rounded-md border-[3px] border-black shadow-[6px_6px_8px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col sm:flex-row"
-                            key={item.id || index}>
-                            <div className="sm:w-1/6 w-full sm:border-r-2 border-b-2 sm:border-b-0 border-gray-300 flex items-center justify-center">{item.day}</div>
-                            <div className="sm:w-5/6 w-full flex flex-col sm:flex-row justify-between items-center px-4 py-2 sm:py-0 sm:px-6">
-                                <div className="flex flex-col gap-2 sm:gap-3 text-center sm:text-left">
-                                    <span className="text-lg md:text-xl font-medium">{item.action}</span>
-                                    <span className="text-md md:text-lg font-semibold text-[rgb(156,87,87)]">{item.name}</span>
-                                </div>
-                                <span className="text-lg md:text-xl font-semibold text-black">{item.time}</span>
+                    {getSchedule.length > 0 ? (
+                        <div className="w-full h-60 bg-[rgb(243,243,243)] flex items-center justify-center rounded-md border-black border-[3px] shadow-[6px_6px_8px_rgba(0,0,0,0.9)] overflow-hidden">
+                            <div className="flex flex-col gap-2 px-4 py-2">
+                                {getSchedule.map((schedule: ISchedule) => (
+                                    <div key={schedule.id} className="flex flex-row justify-between items-center w-full bg-white rounded-md p-2 shadow-md border-black border-[3px]">
+                                        <h1 className="text-lg font-medium">{schedule.name}</h1>
+                                        <span className="text-sm font-light">{schedule.time}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                    ))}
+                    ) : (
+                        <div className="w-full h-60 bg-[rgb(243,243,243)] flex items-center justify-center rounded-md border-black border-[3px] shadow-[6px_6px_8px_rgba(0,0,0,0.9)] overflow-hidden">
+                            <h1 className="text-lg font-medium">No Schedule Available</h1>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
