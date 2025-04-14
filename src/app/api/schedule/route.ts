@@ -1,39 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-const filePath = path.join(process.cwd(), "src/database/schedules.json");
-import fs from "fs";
-import path from "path";
+import { NextResponse } from 'next/server'
 
-const readData = () => {
+export async function GET() {
     try {
-        const data = fs.readFileSync(filePath, "utf8");
-        return JSON.parse(data);
+        const response = await fetch('https://kln00qfp-3000.asse.devtunnels.ms/users')
+        const result = await response.json()
+        return NextResponse.json(result, { status: 200 })
     } catch (error) {
-        console.log(error);
-        return [];
+        return NextResponse.json((error as Error).message, { status: 500 })
     }
-};
-
-const writeData = (data: []) => {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-};
-
-export async function GET(req: NextRequest) {
-    const day = req.nextUrl.searchParams.get("day");
-    const jsonData = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(jsonData);
-    const filteredData = day ? data.filter((item: { day: string }) => item.day.toLowerCase() === day.toLowerCase()) : data;
-    return NextResponse.json(filteredData);
-}
-
-export async function POST(req: Request) {
-    const newSchedule = await req.json();
-    const schedules = readData();
-
-    const newId = schedules.length > 0 ? schedules[schedules.length - 1].id + 1 : 1;
-    const newEntry = { id: newId, ...newSchedule };
-
-    schedules.push(newEntry);
-    writeData(schedules);
-
-    return NextResponse.json(newEntry, { status: 201 });
 }

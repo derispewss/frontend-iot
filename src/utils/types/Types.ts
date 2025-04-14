@@ -1,37 +1,36 @@
 export interface ISchedule {
-    id: number;
-    name: string;
-    action: string;
-    day: string;
-    time: string;
+    id: number
+    nama: string
+    hari: string
+    jam: string
 }
 
 export interface IScheduleFormProps {
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    onSuccess: () => void;
-    id?: number;
+    open: boolean
+    setOpen: (open: boolean) => void
+    onSuccess: () => void
+    id?: number
 }
 
 export interface IFormField {
-    name: string;
-    label: string;
-    type: "text" | "select";
-    required?: boolean;
-    options?: string[];
-    validation?: (value: string) => string | null;
+    name: string
+    label: string
+    type: 'text' | 'select'
+    required?: boolean
+    options?: string[]
+    validation?: (value: string) => string | null
 }
 
 export interface IScheduleData {
-    name: string;
-    action: string;
-    day: string;
-    time: string;
+    nama: string
+    hari: string
+    jam: string
+    telegram_id: number
 }
 
 export interface IDeleteForm {
-  Delete: boolean;
-  setDelete: (isDelete: boolean) => void;
-  id: number;
-  onSucces: () => void;
+    Delete: boolean
+    setDelete: (isDelete: boolean) => void
+    id: number
+    onSucces: () => void
 }
