@@ -24,7 +24,7 @@ const Schedule = () => {
                 const data = await res.json()
                 setSchedule(data)
             } catch (error) {
-                console.error('Error fetching schedule:', error)
+                console.log('Error fetching schedule:', error)
             } finally {
                 setLoading(false)
             }
